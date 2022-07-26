@@ -34,14 +34,6 @@ public class Application extends SpringBootServletInitializer {
         SpringApplication.run(Application.class, args);
     }
 
-//    @Bean
-//    ServletRegistrationBean servletRegistrationBean() {
-//        ServletRegistrationBean servlet = new ServletRegistrationBean(
-//            new CamelHttpTransportServlet(), "/camel-rest-sql/*");
-//        servlet.setName("CamelServlet");
-//        return servlet;
-//    }
-
     @Component
     class RestApi extends RouteBuilder {
 
@@ -61,41 +53,17 @@ public class Application extends SpringBootServletInitializer {
                 .get("/").description("The list of all the books")
                     .route().routeId("books-api")
                     .log("Consulta endpoint books-api")
-                    .to("sql:select distinct description from orders?" +
+                    .to("sql:{{mysql.service.sqlBooksApi}}?" +
                         "dataSource=dataSource&" +
                         "outputClass=io.fabric8.quickstarts.camel.Book")
                     .endRest()
                 .get("order/{id}").description("Details of an order by id")
                     .route().routeId("order-api")
                     .log("Consulta endpoint order/${header.id}")
-                    .to("sql:select * from orders where id = :#${header.id}?" +
+                    .to("sql:{{mysql.service.sqlOrder}}?" +
                         "dataSource=dataSource&outputType=SelectOne&" +
                         "outputClass=io.fabric8.quickstarts.camel.Order");
         }
     }
 
-//    @Component
-//    class Backend extends RouteBuilder {
-//
-//        @Override
-//        public void configure() {
-//            // A first route generates some orders and queue them in DB
-//            from("timer:new-order?delay=1s&period={{quickstart.generateOrderPeriod:2s}}")
-//                .routeId("generate-order")
-//                .bean("orderService", "generateOrder")
-//                .to("sql:insert into orders (id, item, amount, description, processed) values " +
-//                    "(:#${body.id} , :#${body.item}, :#${body.amount}, :#${body.description}, false)?" +
-//                    "dataSource=dataSource")
-//                .log("Inserted new order ${body.id}");
-//
-//            // A second route polls the DB for new orders and processes them
-//            from("sql:select * from orders where processed = false?" +
-//                "consumer.onConsume=update orders set processed = true where id = :#id&" +
-//                "consumer.delay={{quickstart.processOrderPeriod:5s}}&" +
-//                "dataSource=dataSource")
-//                .routeId("process-order")
-//                .bean("orderService", "rowToOrder")
-//                .log("Processed order #id ${body.id} with ${body.amount} copies of the «${body.description}» book");
-//        }
-//    }
 }
