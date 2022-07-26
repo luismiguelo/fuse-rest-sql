@@ -71,28 +71,28 @@ public class Application extends SpringBootServletInitializer {
         }
     }
 
-    @Component
-    class Backend extends RouteBuilder {
-
-        @Override
-        public void configure() {
-            // A first route generates some orders and queue them in DB
-            from("timer:new-order?delay=1s&period={{quickstart.generateOrderPeriod:2s}}")
-                .routeId("generate-order")
-                .bean("orderService", "generateOrder")
-                .to("sql:insert into orders (id, item, amount, description, processed) values " +
-                    "(:#${body.id} , :#${body.item}, :#${body.amount}, :#${body.description}, false)?" +
-                    "dataSource=dataSource")
-                .log("Inserted new order ${body.id}");
-
-            // A second route polls the DB for new orders and processes them
-            from("sql:select * from orders where processed = false?" +
-                "consumer.onConsume=update orders set processed = true where id = :#id&" +
-                "consumer.delay={{quickstart.processOrderPeriod:5s}}&" +
-                "dataSource=dataSource")
-                .routeId("process-order")
-                .bean("orderService", "rowToOrder")
-                .log("Processed order #id ${body.id} with ${body.amount} copies of the «${body.description}» book");
-        }
-    }
+//    @Component
+//    class Backend extends RouteBuilder {
+//
+//        @Override
+//        public void configure() {
+//            // A first route generates some orders and queue them in DB
+//            from("timer:new-order?delay=1s&period={{quickstart.generateOrderPeriod:2s}}")
+//                .routeId("generate-order")
+//                .bean("orderService", "generateOrder")
+//                .to("sql:insert into orders (id, item, amount, description, processed) values " +
+//                    "(:#${body.id} , :#${body.item}, :#${body.amount}, :#${body.description}, false)?" +
+//                    "dataSource=dataSource")
+//                .log("Inserted new order ${body.id}");
+//
+//            // A second route polls the DB for new orders and processes them
+//            from("sql:select * from orders where processed = false?" +
+//                "consumer.onConsume=update orders set processed = true where id = :#id&" +
+//                "consumer.delay={{quickstart.processOrderPeriod:5s}}&" +
+//                "dataSource=dataSource")
+//                .routeId("process-order")
+//                .bean("orderService", "rowToOrder")
+//                .log("Processed order #id ${body.id} with ${body.amount} copies of the «${body.description}» book");
+//        }
+//    }
 }
