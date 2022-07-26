@@ -21,14 +21,14 @@ mysql:
     name:     mysql
     # The database to use, can be customized using the 'MYSQL_SERVICE_DATABASE' env variable
     database: sampledb
-    username: ${bd.username}
+    username: env.get("db-username"); 
     password: hykTyMrv
 
 spring:
   # Spring JDBC configuration
   datasource:
     url:      jdbc:mysql://${${mysql.service.name}.service.host}:${${mysql.service.name}.service.port}/${mysql.service.database}
-    username: ${bd.username}
+    username: ${mysql.service.username}
     password: ${mysql.service.password}
 
 # The application configuration properties
