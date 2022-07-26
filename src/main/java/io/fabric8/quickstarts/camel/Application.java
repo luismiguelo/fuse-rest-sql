@@ -60,7 +60,7 @@ public class Application extends SpringBootServletInitializer {
                 .get("order/{id}").description("Details of an order by id")
                     .route().routeId("order-api")
                     .log("Consulta endpoint order/${header.id}")
-                    .to("sql:{{mysql.service.sqlOrder}}?" +
+                    .to("sql:{{mysql.service.sqlOrder}} :#${header.id}?" +
                         "dataSource=dataSource&outputType=SelectOne&" +
                         "outputClass=io.fabric8.quickstarts.camel.Order");
         }
