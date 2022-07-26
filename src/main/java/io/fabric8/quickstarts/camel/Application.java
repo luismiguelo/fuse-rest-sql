@@ -53,7 +53,7 @@ public class Application extends SpringBootServletInitializer {
                     .apiProperty("api.version", "1.0")
                     .apiProperty("cors", "true")
                     .apiContextRouteId("doc-api")
-                .component("servlet")
+                .component("jetty")
                 .port(8080)
                 .bindingMode(RestBindingMode.json);
 
