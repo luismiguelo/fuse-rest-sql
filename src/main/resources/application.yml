@@ -25,8 +25,8 @@ mysql:
     name:     mysql
     # The database to use, can be customized using the 'MYSQL_SERVICE_DATABASE' env variable
     database: sampledb
-	username: admin
-	password: hykTyMrv
+    username: admin
+    password: hykTyMrv
 
 spring:
   # Spring JDBC configuration
