@@ -60,12 +60,14 @@ public class Application extends SpringBootServletInitializer {
             rest("/books").description("Books REST service")
                 .get("/").description("The list of all the books")
                     .route().routeId("books-api")
+                    .log("Consulta endpoint books-api")
                     .to("sql:select distinct description from orders?" +
                         "dataSource=dataSource&" +
                         "outputClass=io.fabric8.quickstarts.camel.Book")
                     .endRest()
                 .get("order/{id}").description("Details of an order by id")
                     .route().routeId("order-api")
+                    .log("Consulta endpoint order/${header.id}")
                     .to("sql:select * from orders where id = :#${header.id}?" +
                         "dataSource=dataSource&outputType=SelectOne&" +
                         "outputClass=io.fabric8.quickstarts.camel.Order");
