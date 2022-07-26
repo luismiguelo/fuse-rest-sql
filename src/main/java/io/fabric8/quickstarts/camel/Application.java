@@ -54,7 +54,7 @@ public class Application extends SpringBootServletInitializer {
                     .apiProperty("cors", "true")
                     .apiContextRouteId("doc-api")
                 .component("jetty")
-                .port(8080)
+                .port("{{camel.springboot.port}}")
                 .bindingMode(RestBindingMode.json);
 
             rest("/books").description("Books REST service")
