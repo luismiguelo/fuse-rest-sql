@@ -2,7 +2,7 @@ camel:
   springboot:
     # The Camel context name
     name: CamelRestSql
-    port: {{env:service-port}}
+    port: ${service_port}
 
 # Binding health checks to a different port
 server:
@@ -21,7 +21,7 @@ mysql:
     name:     mysql
     # The database to use, can be customized using the 'MYSQL_SERVICE_DATABASE' env variable
     database: sampledb
-    user: {{env:db-username}}
+    user: ${db_username}
     password: hykTyMrv
 
 spring:
